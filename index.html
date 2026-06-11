@@ -306,6 +306,11 @@ function saveSavLog(l) { try { localStorage.setItem('jlf_savlog',JSON.stringify(
     }
     var sv = localStorage.getItem('jlf_saved');
     if(!sv || parseFloat(sv) === 0) { localStorage.setItem('jlf_saved', '1000'); }
+    // Clear sandbox $110 balance
+    try {
+      var balRaw = localStorage.getItem('jlf_bal');
+      if(balRaw) { var b=JSON.parse(balRaw); if(b.bal<=110) localStorage.removeItem('jlf_bal'); }
+    } catch(e2) {}
   } catch(e) {}
 })();
 var transactions = loadTx();
