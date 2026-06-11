@@ -589,6 +589,8 @@ function categorize(desc, isIncome) {
 function parseLine(line) {
   line = line.trim();
   if(!line) return null;
+  // Strip WF 'Transaction Details for Row N' prefix
+  line = line.replace(/^Transaction Details for Row \d+\s*/i, '');
   var clean = line.replace(/^(PURCHASE|DEBIT CARD PURCHASE|DEBIT|CREDIT CARD|RECURRING)\s+/i, '');
   var dm = clean.match(/^(\d{4}-\d{2}-\d{2})/) || clean.match(/^(\d{2}[\/\-]\d{2}[\/\-]\d{2,4})/);
   if(!dm) return null;
