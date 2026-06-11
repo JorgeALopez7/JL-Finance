@@ -255,7 +255,7 @@ function checkPw() {
 }
 
 // Storage
-function loadTx() { try { var s=localStorage.getItem('jlf_tx'); return s?JSON.parse(s):JSON.parse(JSON.stringify(SEED_TX)); } catch(e) { return JSON.parse(JSON.stringify(SEED_TX)); } }
+function loadTx() { try { var s=localStorage.getItem('jlf_tx'); var p=s?JSON.parse(s):null; return (p&&p.length>0)?p:JSON.parse(JSON.stringify(SEED_TX)); } catch(e) { return JSON.parse(JSON.stringify(SEED_TX)); } }
 function saveTx(t) { try { localStorage.setItem('jlf_tx',JSON.stringify(t)); } catch(e) {} }
 function loadSaved() { try { var v=parseFloat(localStorage.getItem('jlf_saved')||'0'); return isNaN(v)?0:v; } catch(e) { return 0; } }
 function saveSavedAmt(v) { try { localStorage.setItem('jlf_saved',String(v)); } catch(e) {} }
