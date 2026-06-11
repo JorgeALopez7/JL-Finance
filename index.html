@@ -262,6 +262,18 @@ function saveSavedAmt(v) { try { localStorage.setItem('jlf_saved',String(v)); } 
 function loadSavLog() { try { var s=localStorage.getItem('jlf_savlog'); return s?JSON.parse(s):[]; } catch(e) { return []; } }
 function saveSavLog(l) { try { localStorage.setItem('jlf_savlog',JSON.stringify(l)); } catch(e) {} }
 
+// One-time fix: clear bad plaid/empty data from localStorage
+(function(){
+  try {
+    var s = localStorage.getItem('jlf_tx');
+    if(s) {
+      var p = JSON.parse(s);
+      if(!p || p.length === 0) { localStorage.removeItem('jlf_tx'); }
+    }
+    var sv = localStorage.getItem('jlf_saved');
+    if(!sv || parseFloat(sv) === 0) { localStorage.setItem('jlf_saved', '1000'); }
+  } catch(e) {}
+})();
 var transactions = loadTx();
 var savingsLog = loadSavLog();
 var savedSoFar = (function(){ var v=loadSaved(); return v>0?v:(savingsLog.length>0?v:1000); })(); if(savedSoFar===1000 && !localStorage.getItem('jlf_saved')) saveSavedAmt(1000);
