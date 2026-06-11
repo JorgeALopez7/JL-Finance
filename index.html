@@ -264,7 +264,7 @@ function saveSavLog(l) { try { localStorage.setItem('jlf_savlog',JSON.stringify(
 
 var transactions = loadTx();
 var savingsLog = loadSavLog();
-var savedSoFar = savingsLog.length > 0 ? loadSaved() : 0; if(!savingsLog.length) saveSavedAmt(0);
+var savedSoFar = (function(){ var v=loadSaved(); return v>0?v:(savingsLog.length>0?v:1000); })(); if(savedSoFar===1000 && !localStorage.getItem('jlf_saved')) saveSavedAmt(1000);
 var savMode = '+';
 var txMonth = null;
 var historyMonth = null;
