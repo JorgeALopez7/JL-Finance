@@ -494,11 +494,18 @@ function syncPlaid() {
 }
 
 function disconnectPlaid() {
-  if(!confirm('Disconnect Wells Fargo? Your existing transactions will remain.')) return;
+  if(!confirm('Disconnect Wells Fargo?')) return;
+  var removeData = confirm('Also remove all synced transactions?\nOK = yes remove them, Cancel = keep them.');
   plaidAccessToken = null;
   clearPlaidToken();
+  if(removeData) {
+    snapshotTx();
+    transactions = transactions.filter(function(t){ return t.source !== 'plaid'; });
+    saveTx(transactions);
+    renderAll();
+  }
   updatePlaidButtons();
-  setPlaidStatus('Disconnected.', false);
+  setPlaidStatus('Disconnected.' + (removeData ? ' Plaid transactions removed.' : ''), false);
   var lastSyncEl = document.getElementById('plaid-last-sync');
   if(lastSyncEl) lastSyncEl.style.display = 'none';
 }
